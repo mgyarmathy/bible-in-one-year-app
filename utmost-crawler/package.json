@@ -1,0 +1,21 @@
+{
+  "name": "utmost-crawler",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mgyarmathy/utmost"
+  },
+  "author": "mgyarmathy",
+  "bugs": {
+    "url": "https://github.com/mgyarmathy/utmost/issues"
+  },
+  "homepage": "https://github.com/mgyarmathy/utmost",
+  "dependencies": {
+    "crawler": "^0.4.3"
+  }
+}
