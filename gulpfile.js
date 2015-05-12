@@ -1,7 +1,10 @@
-var gulp        = require('gulp');
+var gulp = require('gulp');
 var browserSync = require('browser-sync');
-var sass        = require('gulp-sass');
-var prefix      = require('gulp-autoprefixer');
+var sass = require('gulp-sass');
+var prefix = require('gulp-autoprefixer');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var rename = require('gulp-rename');
 
 /**
  * Launch the Server
@@ -35,16 +38,28 @@ gulp.task('sass', function () {
         .pipe(browserSync.reload({stream:true}));
 });
 
+gulp.task('browserify', function() {
+  var bundleStream = browserify('./js/app.js').bundle()
+ 
+  bundleStream
+    .pipe(source('js/app.js'))
+    //.pipe(streamify(uglify()))
+    .pipe(rename('bundle.js'))
+    .pipe(gulp.dest('./js'))
+    .pipe(browserSync.reload({stream:true}));
+});
+
 /**
  * Watch files and reload when changed
  */
 gulp.task('watch', function () {
+    gulp.watch('js/app.js', ['browserify']);
     gulp.watch('_sass/**/*.scss', ['sass']);
-    gulp.watch(['index.html', 'js/app.js'], ['reload']);
+    gulp.watch(['index.html'], ['reload']);
 });
 
 /**
  * Default task, running just `gulp` will compile the sass,
  * launch BrowserSync, and watch files.
  */
-gulp.task('default', ['browser-sync', 'watch']);
+gulp.task('default', ['sass', 'browserify', 'browser-sync', 'watch']);

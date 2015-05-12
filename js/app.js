@@ -1,20 +1,30 @@
-var spreadsheet_url = "https://docs.google.com/spreadsheets/d/1WCLmdFnJGXXMq31mGSK6hExJIGGl1MONo9ENoiWco3k/pubhtml";
+var angular = require('angular');
+var moment = require('moment');
+var ReadingPlan = require('bible-in-one-year');
+var rp = new ReadingPlan();
 
-Tabletop.init({ 
-    key: spreadsheet_url,
-    callback: function(data, tabletop) { 
-        console.log(data[getDayOfYear()])
-        var entry = data[getDayOfYear()];
-        document.querySelector('.container').innerHTML = '<h1>'+entry.title+'</h1>'+entry.content;
-    },
-    simpleSheet: true
+if(typeof(Storage)!=="undefined") {
+
+var app = angular.module('bibleInOneYearApp', [])
+
+.controller('MainCtrl', function($scope) {
+    $scope.readingPlan = JSON.parse(localStorage.getItem('ReadingPlan'));
+
+    $scope.start = function() {
+        $scope.readingPlan = [];
+        for(var i = 0; i<rp.length(); i++) {
+            var day = moment().add(i, 'days').format('MMMM Do YYYY');
+            $scope.readingPlan.push({date: day, scripture: rp.getDay(i)});
+            localStorage.setItem('ReadingPlan', JSON.stringify($scope.readingPlan));
+        }
+    };
+
+    $scope.delete = function() {
+        $scope.readingPlan = [];
+        localStorage.removeItem('ReadingPlan');
+    }
 });
 
-function getDayOfYear() {
-    var now = new Date();
-    var start = new Date(now.getFullYear(), 0, 0);
-    var diff = now - start;
-    var oneDay = 1000 * 60 * 60 * 24;
-    var day = Math.floor(diff / oneDay);
-    return day
+} else {
+    alert('Sorry! Your browser does not support web storage.');
 }

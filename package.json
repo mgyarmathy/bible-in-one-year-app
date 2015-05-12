@@ -1,5 +1,5 @@
 {
-  "name": "utmost",
+  "name": "bible-in-one-year-app",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -8,21 +8,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/mgyarmathy/utmost"
+    "url": "http://github.com/mgyarmathy/bible-in-one-year-app"
   },
   "author": "mgyarmathy",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mgyarmathy/utmost/issues"
+    "url": "https://github.com/mgyarmathy/bible-in-one-year-app/issues"
   },
-  "homepage": "https://github.com/mgyarmathy/utmost",
+  "homepage": "https://github.com/mgyarmathy/bible-in-one-year-app",
   "devDependencies": {
     "browser-sync": "^2.6.9",
+    "browserify": "^10.1.3",
     "gulp": "^3.8.10",
     "gulp-autoprefixer": "^2.0.0",
-    "gulp-sass": "^1.2.4"
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^1.2.4",
+    "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "bible-english": "^0.1.0"
+    "angular": "^1.3.15",
+    "bible-in-one-year": "^1.0.0",
+    "moment": "^2.10.2"
   }
 }
