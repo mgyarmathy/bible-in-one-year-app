@@ -1,65 +1,52 @@
 var gulp = require('gulp');
-var browserSync = require('browser-sync');
+var gutil = require('gulp-util');
+var bower = require('bower');
+var concat = require('gulp-concat');
 var sass = require('gulp-sass');
-var prefix = require('gulp-autoprefixer');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
+var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
+var sh = require('shelljs');
 
-/**
- * Launch the Server
- */
-gulp.task('browser-sync', ['sass'], function() {
-    browserSync({
-        server: {
-            baseDir: './'
-        }
+var paths = {
+  sass: ['./scss/**/*.scss']
+};
+
+gulp.task('default', ['sass']);
+
+gulp.task('sass', function(done) {
+  gulp.src('./scss/ionic.app.scss')
+    .pipe(sass({
+      errLogToConsole: true
+    }))
+    .pipe(gulp.dest('./www/css/'))
+    .pipe(minifyCss({
+      keepSpecialComments: 0
+    }))
+    .pipe(rename({ extname: '.min.css' }))
+    .pipe(gulp.dest('./www/css/'))
+    .on('end', done);
+});
+
+gulp.task('watch', function() {
+  gulp.watch(paths.sass, ['sass']);
+});
+
+gulp.task('install', ['git-check'], function() {
+  return bower.commands.install()
+    .on('log', function(data) {
+      gutil.log('bower', gutil.colors.cyan(data.id), data.message);
     });
 });
 
-/**
- * Reload the static site
- */
-gulp.task('reload', function () {
-    browserSync.reload();
+gulp.task('git-check', function(done) {
+  if (!sh.which('git')) {
+    console.log(
+      '  ' + gutil.colors.red('Git is not installed.'),
+      '\n  Git, the version control system, is required to download Ionic.',
+      '\n  Download git here:', gutil.colors.cyan('http://git-scm.com/downloads') + '.',
+      '\n  Once git is installed, run \'' + gutil.colors.cyan('gulp install') + '\' again.'
+    );
+    process.exit(1);
+  }
+  done();
 });
-
-/**
- * Compile files from _scss into css (for live injecting)
- */
-gulp.task('sass', function () {
-    return gulp.src('_sass/*.scss')
-        .pipe(sass({
-            includePaths: ['_sass'],
-            onError: browserSync.notify
-        }))
-        .pipe(prefix(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
-        .pipe(gulp.dest('css'))
-        .pipe(browserSync.reload({stream:true}));
-});
-
-gulp.task('browserify', function() {
-  var bundleStream = browserify('./js/app.js').bundle()
- 
-  bundleStream
-    .pipe(source('js/app.js'))
-    //.pipe(streamify(uglify()))
-    .pipe(rename('bundle.js'))
-    .pipe(gulp.dest('./js'))
-    .pipe(browserSync.reload({stream:true}));
-});
-
-/**
- * Watch files and reload when changed
- */
-gulp.task('watch', function () {
-    gulp.watch('js/app.js', ['browserify']);
-    gulp.watch('_sass/**/*.scss', ['sass']);
-    gulp.watch(['index.html'], ['reload']);
-});
-
-/**
- * Default task, running just `gulp` will compile the sass,
- * launch BrowserSync, and watch files.
- */
-gulp.task('default', ['sass', 'browserify', 'browser-sync', 'watch']);
