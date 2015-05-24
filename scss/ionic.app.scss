@@ -15,9 +15,72 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
+$calm: #FC685B !default;
+
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
+.slider {
+    height: 100%;
+}
+
+.slider-slides {
+    text-align: center;
+}
+
+.slider-slide {
+    padding-top: 80px;
+}
+
+.reading-plan-container {
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.icon-calm {
+    color: $calm;
+}
+
+.reading-plan-day {
+    display: inline-block;
+    margin: 10px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #ccc;
+
+    &.complete {
+        border: 1px solid $calm;
+        background-color: $calm;
+        a, .day-label {
+            color: #FFF;
+        }
+    }
+
+    a {
+        display: inline-block; 
+        width: 50px;
+        padding: 10px;
+        color: #4c4c4c;
+        text-decoration: none;
+    }
+
+    .day-label {
+        color: #333;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 10px;
+    }
+}
+
+.pointer {
+    cursor: pointer
+}
+
+.no-pointer {
+    cursor: default !important;
+}
+
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+
 

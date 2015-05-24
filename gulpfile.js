@@ -7,11 +7,25 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 
+var browserSync = require('browser-sync');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream')
+
 var paths = {
   sass: ['./scss/**/*.scss']
 };
 
-gulp.task('default', ['sass']);
+gulp.task('browser-sync', ['sass'], function() {
+  browserSync({
+    server: {
+      baseDir: './www/'
+    }
+  });
+});
+
+gulp.task('reload', function () {
+  browserSync.reload();
+})
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
@@ -24,11 +38,25 @@ gulp.task('sass', function(done) {
     }))
     .pipe(rename({ extname: '.min.css' }))
     .pipe(gulp.dest('./www/css/'))
+    //.pipe(browserSync.reload({stream:true}))
     .on('end', done);
 });
 
+gulp.task('browserify', function() {
+  var bundleStream = browserify('./www/js/app.js').bundle()
+ 
+  bundleStream
+    .pipe(source('www/js/app.js'))
+    //.pipe(streamify(uglify()))
+    .pipe(rename('bundle.js'))
+    .pipe(gulp.dest('./www/js'))
+    .pipe(browserSync.reload({stream:true}));
+});
+
 gulp.task('watch', function() {
-  gulp.watch(paths.sass, ['sass']);
+  gulp.watch('www/js/app.js', ['browserify']);
+  gulp.watch(paths.sass, ['sass', 'reload']);
+  gulp.watch(['www/index.html', 'www/templates/*.html'], ['reload']);
 });
 
 gulp.task('install', ['git-check'], function() {
@@ -50,3 +78,5 @@ gulp.task('git-check', function(done) {
   }
   done();
 });
+
+gulp.task('default', ['sass', 'browserify', 'browser-sync', 'watch']);

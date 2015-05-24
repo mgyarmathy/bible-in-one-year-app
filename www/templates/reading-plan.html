@@ -1,0 +1,11 @@
+<ion-view view-title="Bible In One Year - Reading Plan">
+  <ion-content>
+    <div class="reading-plan-container">
+      <div ng-repeat="day in readingPlan" class="reading-plan-day" ng-class="{'complete': day.complete}">
+        <a nav-direction="enter" href="#/tab/reading-plan-day/{{day.dayNumber}}">
+          <div class="day-label">DAY</div>{{day.dayNumber}}
+        </a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
