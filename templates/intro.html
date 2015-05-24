@@ -1,0 +1,82 @@
+<ion-view view-title="Bible In One Year">
+  <ion-nav-bar align-title="center" class="bar-calm">
+    <ion-nav-buttons side="left">
+      <button class="button button-white button-clear" ng-show="slideIndex == 1" ng-click="previous()">Previous</button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+      <button class="button button-white button-clear" ng-show="slideIndex == 0" ng-click="next()">Next</button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-slide-box show-pager="false" on-slide-changed="slideChanged(index)">
+    
+    <ion-slide>
+      <h4>Welcome To</h4>
+      <h2>Bible In One Year</h2>
+      <div id="logo">
+        <img src="http://code.ionicframework.com/assets/img/app_icon.png">
+      </div>
+      <p>
+        But if you are angry, too bad.
+      </p>
+    </ion-slide>
+    <ion-slide>
+      <ion-content style="padding-top: 80px">
+      <h2>Choose a Reading Plan</h2>
+      <div class="row responsive-md">
+        <div class="col">
+          <div class="list card">
+            <div class="item item-body">
+              <i style="font-size:40px;" class="icon ion-map"></i>
+              <h2>Old/New Testament</h2>
+              <p>Each day includes a passage from both the Old Testament and New Testament.
+              </p>
+            </div>
+            <div ng-click="startPlan('oldnew-testament')" class="item tabs tabs-calm pointer">
+              Start
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="list card">
+            <div class="item item-body">
+              <i style="font-size:40px;" class="icon ion-map"></i>
+              <h2>M'Cheyne</h2>
+              <p>Read the Old Testament, New Testament, and Psalms or Gospels every day.'
+              </p>
+            </div>
+            <div ng-click="startPlan('mcheyne')" class="item tabs tabs-calm pointer">
+              Start
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="list card">
+            <div class="item item-body">
+              <i style="font-size:40px;" class="icon ion-map"></i>
+              <h2>Chronological</h2>
+              <p>Read the Bible in the chronological order in which its stories and events occurred.
+              </p>
+            </div>
+            <div ng-click="startPlan('chronological')" class="item tabs tabs-calm pointer">
+              Start
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="list card">
+            <div class="item item-body">
+              <i style="font-size:40px;" class="icon ion-map"></i>
+              <h2>New Testament in a Year</h2>
+              <p>Read the New Testament from start to finish, from Matthew to Revelation.
+              </p>
+            </div>
+            <div ng-click="startPlan('new-testament')" class="item tabs tabs-calm pointer">
+              Start
+            </div>
+          </div>
+        </div>
+      </div>
+      </ion-content>
+    </ion-slide>
+  </ion-slide-box>
+</ion-view>

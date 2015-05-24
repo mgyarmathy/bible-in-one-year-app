@@ -1,0 +1,31 @@
+<ion-view view-title="Bible In One Year - Reading Plan Day">
+  <ion-content class="padding text-center" style="padding-top:75px;">
+    <div class="row responsive-md">
+      <div class="col col-50 col-offset-25">
+        <div class="list card">
+          <div class="item item-icon-left">
+            <i ng-class="{'icon-calm': day.complete}" ng-click="toggleComplete()" class="icon ion-calendar pointer"></i>
+            <div style="color: #333; font-weight: 400; font-size: 12px; line-height: 14px;">DAY {{day.dayNumber}}</div>
+            <strong style="color: #4c4c4c;">{{day.date}}</strong>
+          </div>
+          <div class="item item-body">
+            <h1 ng-bind-html="day.scripture | stringReplace : ',' : '<br/>' " style="margin-bottom:16px; color: #4c4c4c;"></h1>
+          </div>
+          <div class="item tabs tabs-secondary">
+            <span class="tab-item no-pointer" ng-if="day.dayNumber == 1"></span>
+            <a class="tab-item" nav-direction="back" ng-if="day.dayNumber > 1" href="#/tab/reading-plan-day/{{day.dayNumber - 1}}">
+              Previous Day
+            </a>
+            <a class="tab-item" nav-direction="exit" href="#/tab/reading-plan">
+              <i class="icon ion-map"></i>
+            </a>
+            <a class="tab-item" nav-direction="forward" ng-if="day.dayNumber < 365" href="#/tab/reading-plan-day/{{day.dayNumber + 1}}">
+              Next Day
+            </a>
+            <span class="tab-item no-pointer" ng-if="day.dayNumber == 365"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
