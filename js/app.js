@@ -40,9 +40,25 @@ angular.module('bibleInOneYear', ['ionic'])
     createPlan: function(plan) {
       var rp = new ReadingPlan(plan || 'oldnew-testament');
       readingPlan = [];
-      for(var i = 0; i<rp.length(); i++) {
+      for (var i = 0; i < rp.length(); i++) {
         var day = moment().add(i, 'days').format('MMMM D, YYYY');
         readingPlan.push({dayNumber: i+1, date: day, scripture: rp.getDay(i), complete: false});
+      }
+      window.localStorage.setItem('ReadingPlan', JSON.stringify(readingPlan));
+    },
+    recalibrate: function() {
+      // find first incomplete day
+      var incomplete = 0;
+      for (var i = 0; i < readingPlan.length; i++) {
+        if (readingPlan[i].complete == false) {
+          incomplete = i;
+          break;
+        }
+      }
+      // change the date of all of the following days
+      for (var i = incomplete, j = 0; i < readingPlan.length; i++) {
+        readingPlan[i].date = moment().add(j, 'days').format('MMMM D, YYYY');
+        j++;
       }
       window.localStorage.setItem('ReadingPlan', JSON.stringify(readingPlan));
     },
@@ -70,6 +86,18 @@ angular.module('bibleInOneYear', ['ionic'])
 
 .controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate, ReadingPlanService, SettingsService) {
   $scope.slideIndex = 0;
+  $scope.currentDay = moment().format('MMMM, D, YYYY');
+
+  $scope.dayComplete = false;
+
+  $scope.toggleComplete = function($event) {
+    $scope.dayComplete = !$scope.dayComplete;
+    var elem = $event.currentTarget;
+    elem.classList.add('animated','pulse');
+    setTimeout(function() {
+      elem.classList.remove('animated', 'pulse');
+    }, 500);
+  };
 
   $scope.next = function() {
     $ionicSlideBoxDelegate.next();
@@ -91,7 +119,7 @@ angular.module('bibleInOneYear', ['ionic'])
   };
 })
 
-.controller('MainCtrl', function($scope, $state, $ionicPopup, ReadingPlanService, SettingsService) {
+.controller('MainCtrl', function($scope, $state, $ionicPopup, $ionicHistory, ReadingPlanService, SettingsService) {
   $scope.readingPlan = ReadingPlanService.list();
 
   $scope.$watch(ReadingPlanService.list, function() {
@@ -100,6 +128,23 @@ angular.module('bibleInOneYear', ['ionic'])
 
   $scope.createPlan = function() {
     ReadingPlanService.createPlan();
+  };
+
+  $scope.recalibrateDates = function() {
+    var confirmPopup = $ionicPopup.confirm({
+      title: 'Recalibrate Reading Plan',
+      subTitle: 'Are you behind on your reading plan?',
+      template: 'Click OK to recalibrate the dates of your reading plan.',
+    });
+    confirmPopup.then(function(res) {
+      if(res) {
+        ReadingPlanService.recalibrate();
+        $ionicHistory.clearHistory()
+        $state.go('tabs.reading-plan');
+      } else {
+        console.log('You are not sure');
+      }
+    });
   };
 
   $scope.clearProgress = function() {
@@ -129,8 +174,13 @@ angular.module('bibleInOneYear', ['ionic'])
     $scope.day = ReadingPlanService.findByDate(moment().format('MMMM D, YYYY'));
   });
 
-  $scope.toggleComplete = function() {
+  $scope.toggleComplete = function($event) {
     $scope.day.complete = !$scope.day.complete;
+    var elem = $event.currentTarget;
+    elem.classList.add('animated','pulse');
+    setTimeout(function() {
+      elem.classList.remove('animated', 'pulse');
+    }, 500);
     ReadingPlanService.save();
     // $state.go('tabs.reading-plan');
   };
@@ -144,8 +194,13 @@ angular.module('bibleInOneYear', ['ionic'])
     $scope.day = ReadingPlanService.getDay($stateParams.day);
   });
 
-  $scope.toggleComplete = function() {
+  $scope.toggleComplete = function($event) {
     $scope.day.complete = !$scope.day.complete;
+    var elem = $event.currentTarget;
+    elem.classList.add('animated','pulse');
+    setTimeout(function() {
+      elem.classList.remove('animated', 'pulse');
+    }, 500);
     ReadingPlanService.save();
     // $state.go('tabs.reading-plan');
   };
@@ -192,7 +247,7 @@ angular.module('bibleInOneYear', ['ionic'])
       url: "/today",
       views: {
         'today-tab': {
-          templateUrl: "templates/today.html",
+          templateUrl: "templates/reading-plan-day.html",
           controller: "TodayCtrl"
         }
       }
