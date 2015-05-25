@@ -33,7 +33,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .reading-plan-container {
-    padding: 10px 20px;
+    padding: 10px 15px;
     text-align: center;
 }
 
@@ -80,7 +80,28 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     cursor: default !important;
 }
 
+@import "animate";
+
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+
+
+.about-page {
+    a {
+        color: $calm;
+        font-weight: 600;
+        text-decoration: none;
+    }
+}
+
+.bar .title {
+    overflow: initial;
+}
+
+@media (max-width: 767px) {
+    h2 {
+        font-size: 26px;
+    }
+}
 
 

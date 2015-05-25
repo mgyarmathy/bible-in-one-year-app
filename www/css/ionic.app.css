@@ -25,7 +25,7 @@ $dark:                            #444 !default;
   padding-top: 80px; }
 
 .reading-plan-container {
-  padding: 10px 20px;
+  padding: 10px 15px;
   text-align: center; }
 
 .icon-calm {
@@ -59,6 +59,55 @@ $dark:                            #444 !default;
 
 .no-pointer {
   cursor: default !important; }
+
+/*!
+Animate.css - http://daneden.me/animate
+Licensed under the MIT license - http://opensource.org/licenses/MIT
+
+Copyright (c) 2015 Daniel Eden
+*/
+.animated {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both; }
+
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite; }
+
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1); }
+
+  50% {
+    -webkit-transform: scale3d(1.15, 1.15, 1.15);
+    transform: scale3d(1.15, 1.15, 1.15); }
+
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1); } }
+
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1); }
+
+  50% {
+    -webkit-transform: scale3d(1.15, 1.15, 1.15);
+    transform: scale3d(1.15, 1.15, 1.15); }
+
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1); } }
+
+.pulse {
+  -webkit-animation-name: pulse;
+  animation-name: pulse; }
 
 /*!
   Ionicons, v2.0.1
@@ -7719,3 +7768,15 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+.about-page a {
+  color: #FC685B;
+  font-weight: 600;
+  text-decoration: none; }
+
+.bar .title {
+  overflow: initial; }
+
+@media (max-width: 767px) {
+  h2 {
+    font-size: 26px; } }
