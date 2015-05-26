@@ -1,10 +1,13 @@
-<ion-header-bar align-title="center" class="bar-calm">
+<ion-header-bar align-title="center" ng-class="'bar-' + theme">
   <div class="buttons">
     <button class="button button-white button-clear" ng-show="showBackButton()" ng-click="goBack()">Back</button>
   </div>
   <h1 class="title">Bible In One Year</h1>
+  <div class="buttons">
+    <!-- <button class="button button-white button-clear button-icon icon ion-loop" ng-if="state.current.name == 'tabs.today'" ng-click="doRefresh()"></button> -->
+  </div>
 </ion-header-bar>
-<ion-tabs class="tabs-stable tabs-color-calm tabs-striped tabs-icon-top">
+<ion-tabs class="tabs-stable tabs-color-calm tabs-striped tabs-icon-top" ng-class="'tabs-color-' + theme">
   <ion-tab title="Today" icon="ion-calendar" ui-sref="tabs.today">
     <ion-nav-view name="today-tab"></ion-nav-view>
   </ion-tab>
