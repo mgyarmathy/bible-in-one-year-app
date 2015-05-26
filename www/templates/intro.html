@@ -4,11 +4,10 @@
       <button class="button button-white button-clear" ng-show="slideIndex > 0" ng-click="previous()">Previous</button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-      <button class="button button-white button-clear" ng-show="slideIndex < 2" ng-click="next()">Next</button>
+      <button class="button button-white button-clear" ng-show="slideIndex < 3" ng-click="next()">Next</button>
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-slide-box show-pager="false" on-slide-changed="slideChanged(index)">
-    
     <ion-slide>
       <h4>Welcome To</h4>
       <h2>Bible In One Year</h2>
@@ -44,13 +43,36 @@
       <p>Tap the <i style="font-size: 20px; padding: 0 5px;" ng-class="{'icon-calm': dayComplete}" ng-click="toggleComplete($event)" class="icon ion-calendar pointer"></i> icon to mark a day as complete.</p>
     </ion-slide>
     <ion-slide>
+      <ion-content scroll="true" style="padding-top: 38px;">
+        <h4 style="margin: 10px 20px 20px;">Track your reading plan progress:</h4>
+        <i style="font-size: 64px;" class="icon ion-map"></i>
+        <div class="reading-plan-container">
+          <div ng-repeat="a in range(4) track by $index" class="reading-plan-day calm complete">
+            <a>
+              <div class="day-label">DAY</div>{{$index + 1}}
+            </a>
+          </div>
+          <div ng-repeat="a in range(25) track by $index" class="reading-plan-day">
+            <a>
+              <div class="day-label">DAY</div>{{$index + 5}}
+            </a>
+          </div>
+          <div class="reading-plan-day">
+            <a>
+              <div class="day-label">DAY</div>…
+            </a>
+          </div>
+        </div>
+      </ion-content>
+    </ion-slide>
+    <ion-slide>
       <ion-content style="padding-top: 38px;">
       <h4 style="margin: 10px 20px 0;">Choose a reading plan to get started:</h4>
       <div class="row responsive-md">
         <div class="col">
           <div class="list card">
             <div class="item item-body">
-              <i style="font-size:40px;" class="icon ion-map"></i>
+              <i style="font-size:40px;" class="icon ion-map icon-calm"></i>
               <h2>Old/New Testament</h2>
               <p>Each day includes a passage from both the Old Testament and New Testament.
               </p>
@@ -63,12 +85,12 @@
         <div class="col">
           <div class="list card">
             <div class="item item-body">
-              <i style="font-size:40px;" class="icon ion-map"></i>
+              <i style="font-size:40px;" class="icon ion-map icon-balanced"></i>
               <h2>M'Cheyne</h2>
               <p>Read the Old Testament, New Testament, and Psalms or Gospels every day.'
               </p>
             </div>
-            <div ng-click="startPlan('mcheyne')" class="item tabs tabs-calm pointer">
+            <div ng-click="startPlan('mcheyne')" class="item tabs tabs-balanced pointer">
               Start
             </div>
           </div>
@@ -76,12 +98,12 @@
         <div class="col">
           <div class="list card">
             <div class="item item-body">
-              <i style="font-size:40px;" class="icon ion-map"></i>
+              <i style="font-size:40px;" class="icon ion-map icon-royal"></i>
               <h2>Chronological</h2>
               <p>Read the Bible in the chronological order in which its stories and events occurred.
               </p>
             </div>
-            <div ng-click="startPlan('chronological')" class="item tabs tabs-calm pointer">
+            <div ng-click="startPlan('chronological')" class="item tabs tabs-royal pointer">
               Start
             </div>
           </div>
@@ -89,12 +111,12 @@
         <div class="col">
           <div class="list card">
             <div class="item item-body">
-              <i style="font-size:40px;" class="icon ion-map"></i>
+              <i style="font-size:40px;" class="icon ion-map icon-energized"></i>
               <h2>New Testament in a Year</h2>
               <p>Read the New Testament from start to finish, from Matthew to Revelation.
               </p>
             </div>
-            <div ng-click="startPlan('new-testament')" class="item tabs tabs-calm pointer">
+            <div ng-click="startPlan('new-testament')" class="item tabs tabs-energized pointer">
               Start
             </div>
           </div>

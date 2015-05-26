@@ -1,10 +1,17 @@
 <ion-view view-title="Bible In One Year - Reading Plan Day">
   <ion-content class="padding text-center" style="padding-top:28px;">
+    <ion-refresher pulling-icon="ion-arrow-down-c" spinner="spiral" ng-if="state.current.name == 'tabs.today'" on-refresh="doRefresh()"></ion-refresher>
     <div class="row responsive-md">
       <div class="col col-50 col-offset-25">
         <div class="list card">
           <div class="item item-icon-left">
-            <i ng-class="{'icon-calm': day.complete}" ng-click="toggleComplete($event)" class="icon ion-calendar pointer"></i>
+            <i ng-class="{
+                  'icon-calm': day.complete && $parent.theme == 'calm',
+                  'icon-balanced': day.complete && $parent.theme == 'balanced',
+                  'icon-royal': day.complete && $parent.theme == 'royal',
+                  'icon-energized': day.complete && $parent.theme == 'energized'
+                }" 
+              ng-click="toggleComplete($event)" class="icon ion-calendar pointer"></i>
             <div style="color: #333; font-weight: 400; font-size: 12px; line-height: 14px;">DAY {{day.dayNumber}}</div>
             <strong style="color: #4c4c4c;">{{day.date}}</strong>
           </div>

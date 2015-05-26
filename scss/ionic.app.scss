@@ -15,10 +15,24 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
-$calm: #FC685B !default;
+$oldnewtestament: #FC685B; // coral
+$mcheyne: #4178A2; // blue
+$chronological: #46C15B; // green
+$newtestament: #FCB75B; // orange
+
+
+$calm: $oldnewtestament !default; // coral
+$balanced: $mcheyne !default; // blue
+$royal: $chronological !default; // green
+$energized: $newtestament !default; // orange
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
+
+@import "animate";
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
 
 .slider {
     height: 100%;
@@ -41,6 +55,18 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     color: $calm;
 }
 
+.icon-balanced {
+    color: $balanced;
+}
+
+.icon-royal {
+    color: $royal;
+}
+
+.icon-energized {
+    color: $energized;
+}
+
 .reading-plan-day {
     display: inline-block;
     margin: 10px;
@@ -49,8 +75,22 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     border: 1px solid #ccc;
 
     &.complete {
-        border: 1px solid $calm;
-        background-color: $calm;
+        &.calm {
+            border: 1px solid $calm;
+            background-color: $calm;
+        }
+        &.balanced {
+            border: 1px solid $balanced;
+            background-color: $balanced;
+        }
+        &.royal {
+            border: 1px solid $royal;
+            background-color: $royal;
+        }
+        &.energized {
+            border: 1px solid $energized;
+            background-color: $energized;
+        }
         a, .day-label {
             color: #FFF;
         }
@@ -79,12 +119,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .no-pointer {
     cursor: default !important;
 }
-
-@import "animate";
-
-// Include all of Ionic
-@import "www/lib/ionic/scss/ionic";
-
 
 .about-page {
     a {

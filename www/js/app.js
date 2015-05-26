@@ -15,6 +15,11 @@ angular.module('bibleInOneYear', ['ionic'])
     loggedIn = window.localStorage.getItem('LoggedIn');
   }
 
+  var theme = "calm";
+  if (window.localStorage.getItem('Theme') != null) {
+    theme = window.localStorage.getItem('Theme');
+  }
+
   return {
     logIn: function() {
       loggedIn = true;
@@ -26,6 +31,28 @@ angular.module('bibleInOneYear', ['ionic'])
     },
     isLoggedIn: function() {
       return loggedIn;
+    },
+    setTheme: function(readingPlan) {
+      switch (readingPlan) {
+        case 'oldnew-testament':
+          theme = 'calm';
+          break;
+        case 'mcheyne':
+          theme = 'balanced';
+          break;
+        case 'chronological':
+          theme = 'royal';
+          break;
+        case 'new-testament':
+          theme = 'energized';
+          break;
+        default:
+          break;
+      }
+      window.localStorage.setItem('Theme', theme);
+    },
+    getTheme: function() {
+      return theme;
     }
   }
 })
@@ -112,8 +139,13 @@ angular.module('bibleInOneYear', ['ionic'])
     $scope.slideIndex = index;
   };
 
+  $scope.range = function(n) {
+    return new Array(n);
+  };
+
   $scope.startPlan = function(planName) {
     SettingsService.logIn();
+    SettingsService.setTheme(planName);
     ReadingPlanService.createPlan(planName);
     $state.go('tabs.today');
   };
@@ -121,14 +153,7 @@ angular.module('bibleInOneYear', ['ionic'])
 
 .controller('MainCtrl', function($scope, $state, $ionicPopup, $ionicHistory, ReadingPlanService, SettingsService) {
   $scope.readingPlan = ReadingPlanService.list();
-
-  $scope.$watch(ReadingPlanService.list, function() {
-    $scope.readingPlan = ReadingPlanService.list();
-  });
-
-  $scope.createPlan = function() {
-    ReadingPlanService.createPlan();
-  };
+  $scope.theme = SettingsService.getTheme();
 
   $scope.recalibrateDates = function() {
     var confirmPopup = $ionicPopup.confirm({
@@ -165,9 +190,17 @@ angular.module('bibleInOneYear', ['ionic'])
       }
     });
   };
+
+  $scope.$watch(ReadingPlanService.list, function() {
+    $scope.readingPlan = ReadingPlanService.list();
+  });
+
+  $scope.$watch(SettingsService.getTheme, function() {
+    $scope.theme = SettingsService.getTheme();
+  });
 })
 
-.controller('TodayCtrl', function($scope, $state, ReadingPlanService) {
+.controller('TodayCtrl', function($scope, $state, $timeout, ReadingPlanService) {
   $scope.day = ReadingPlanService.findByDate(moment().format('MMMM D, YYYY'));
 
   $scope.$watch(ReadingPlanService.list, function() {
@@ -184,6 +217,16 @@ angular.module('bibleInOneYear', ['ionic'])
     ReadingPlanService.save();
     // $state.go('tabs.reading-plan');
   };
+
+  $scope.doRefresh = function() {
+    $timeout( function() {
+      $scope.day = ReadingPlanService.findByDate(moment().format('MMMM D, YYYY'));
+
+      //Stop the ion-refresher from spinning
+      $scope.$broadcast('scroll.refreshComplete');
+    
+    }, 1000);
+  }
 })
 
 .controller('ReadingPlanDayCtrl', function($scope, $state, $stateParams, ReadingPlanService) {
@@ -295,6 +338,8 @@ angular.module('bibleInOneYear', ['ionic'])
 }])
 
 .run(function($ionicPlatform, $ionicHistory, $rootScope, $location, $state, SettingsService) {
+
+  $rootScope.state = $state;
 
   $rootScope.showBackButton = function() {
     var s = $state.current.name
