@@ -7734,7 +7734,7 @@ a.button {
   padding-top: 80px; }
 
 .reading-plan-container {
-  padding: 10px 15px;
+  padding: 30px 15px;
   text-align: center; }
 
 .icon-calm {
@@ -7787,10 +7787,11 @@ a.button {
 .no-pointer {
   cursor: default !important; }
 
-.about-page a {
-  color: #FC685B;
-  font-weight: 600;
-  text-decoration: none; }
+.about-page {
+  color: #4c4c4c; }
+  .about-page a {
+    font-weight: 600;
+    text-decoration: none; }
 
 .bar .title {
   overflow: initial; }

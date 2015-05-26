@@ -47,7 +47,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .reading-plan-container {
-    padding: 10px 15px;
+    padding: 30px 15px;
     text-align: center;
 }
 
@@ -121,8 +121,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .about-page {
+    color: #4c4c4c;
+
     a {
-        color: $calm;
         font-weight: 600;
         text-decoration: none;
     }

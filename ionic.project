@@ -1,5 +1,5 @@
 {
-  "name": "bible-in-one-year",
+  "name": "Bible In One Year",
   "app_id": "",
   "gulpStartupTasks": [
     "sass",
