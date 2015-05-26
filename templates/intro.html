@@ -8,9 +8,14 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-slide-box show-pager="false" on-slide-changed="slideChanged(index)">
-    <ion-slide>
+    <ion-slide style="padding-top: 100px;">
       <h4>Welcome To</h4>
       <h2>Bible In One Year</h2>
+      <div class="row">
+        <div class="col-33 col-offset-33">
+          <img style="width: 100%; max-width: 300px; margin-top: 20px" src="img/icon.png"/>
+        </div>
+      </div>
       <div class="bar bar-footer">
         <div class="title" style="font-size: 9px;">Created with <i style="padding: 2px;" class="icon ion-heart"></i> by Michael Gyarmathy</div>
       </div>
@@ -45,22 +50,24 @@
     <ion-slide>
       <ion-content scroll="true" style="padding-top: 38px;">
         <h4 style="margin: 10px 20px 20px;">Track your reading plan progress:</h4>
-        <i style="font-size: 64px;" class="icon ion-map"></i>
-        <div class="reading-plan-container">
-          <div ng-repeat="a in range(4) track by $index" class="reading-plan-day calm complete">
-            <a>
-              <div class="day-label">DAY</div>{{$index + 1}}
-            </a>
-          </div>
-          <div ng-repeat="a in range(25) track by $index" class="reading-plan-day">
-            <a>
-              <div class="day-label">DAY</div>{{$index + 5}}
-            </a>
-          </div>
-          <div class="reading-plan-day">
-            <a>
-              <div class="day-label">DAY</div>…
-            </a>
+        <i style="display: block; font-size: 64px; margin-bottom: 6px;" class="icon ion-map"></i>
+        <div class="reading-plan-container row responsive-md">
+          <div class="col-80 col-offset-10">
+            <div ng-repeat="a in range(4) track by $index" class="reading-plan-day calm complete">
+              <a>
+                <div class="day-label">DAY</div>{{$index + 1}}
+              </a>
+            </div>
+            <div ng-repeat="a in range(25) track by $index" class="reading-plan-day">
+              <a>
+                <div class="day-label">DAY</div>{{$index + 5}}
+              </a>
+            </div>
+            <div class="reading-plan-day">
+              <a>
+                <div class="day-label">DAY</div>…
+              </a>
+            </div>
           </div>
         </div>
       </ion-content>
@@ -87,7 +94,7 @@
             <div class="item item-body">
               <i style="font-size:40px;" class="icon ion-map icon-balanced"></i>
               <h2>M'Cheyne</h2>
-              <p>Read the Old Testament, New Testament, and Psalms or Gospels every day.'
+              <p>Read the Old Testament, New Testament, and Psalms or Gospels every day.
               </p>
             </div>
             <div ng-click="startPlan('mcheyne')" class="item tabs tabs-balanced pointer">
