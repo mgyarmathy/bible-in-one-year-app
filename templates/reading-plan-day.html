@@ -1,35 +1,35 @@
 <ion-view view-title="Bible In One Year - Reading Plan Day">
   <ion-content class="padding text-center" style="padding-top:28px;">
-    <ion-refresher pulling-icon="ion-arrow-down-c" spinner="spiral" ng-if="state.current.name == 'tabs.today'" on-refresh="doRefresh()"></ion-refresher>
+    <ion-refresher pulling-icon="ion-arrow-down-c" spinner="spiral" ng-if="state.current.name == 'tabs.today'" on-refresh="vm.doRefresh()"></ion-refresher>
     <div class="row responsive-md">
       <div class="col col-50 col-offset-25">
         <div class="list card">
           <div class="item item-icon-left">
             <i ng-class="{
-                  'icon-calm': day.complete && $parent.theme == 'calm',
-                  'icon-balanced': day.complete && $parent.theme == 'balanced',
-                  'icon-royal': day.complete && $parent.theme == 'royal',
-                  'icon-energized': day.complete && $parent.theme == 'energized'
+                  'icon-calm': vm.day.complete && vm.$parent.theme == 'calm',
+                  'icon-balanced': vm.day.complete && vm.$parent.theme == 'balanced',
+                  'icon-royal': vm.day.complete && vm.$parent.theme == 'royal',
+                  'icon-energized': vm.day.complete && vm.$parent.theme == 'energized'
                 }" 
-              ng-click="toggleComplete($event)" class="icon ion-calendar pointer"></i>
-            <div style="color: #333; font-weight: 400; font-size: 12px; line-height: 14px;">DAY {{day.dayNumber}}</div>
-            <strong style="color: #4c4c4c;">{{day.date}}</strong>
+              ng-click="vm.toggleComplete($event)" class="icon ion-calendar pointer"></i>
+            <div style="color: #333; font-weight: 400; font-size: 12px; line-height: 14px;">DAY {{vm.day.dayNumber}}</div>
+            <strong style="color: #4c4c4c;">{{vm.day.date}}</strong>
           </div>
           <div class="item item-body">
-            <h1 ng-bind-html="day.scripture | stringReplace : ',' : '<br/>' " style="margin-bottom:16px; color: #4c4c4c;"></h1>
+            <h1 ng-bind-html="vm.day.scripture | stringReplace : ',' : '<br/>' " style="margin-bottom:16px; color: #4c4c4c;"></h1>
           </div>
           <div class="item tabs tabs-secondary">
-            <span class="tab-item no-pointer" ng-if="day.dayNumber == 1"></span>
-            <a class="tab-item" nav-direction="back" ng-if="day.dayNumber > 1" href="#/tab/reading-plan-day/{{day.dayNumber - 1}}">
+            <span class="tab-item no-pointer" ng-if="vm.day.dayNumber == 1"></span>
+            <a class="tab-item" nav-direction="back" ng-if="vm.day.dayNumber > 1" href="#/tab/reading-plan-day/{{vm.day.dayNumber - 1}}">
               Previous Day
             </a>
             <a class="tab-item" nav-direction="exit" href="#/tab/reading-plan">
               <i class="icon ion-map"></i>
             </a>
-            <a class="tab-item" nav-direction="forward" ng-if="day.dayNumber < 365" href="#/tab/reading-plan-day/{{day.dayNumber + 1}}">
+            <a class="tab-item" nav-direction="forward" ng-if="vm.day.dayNumber < 365" href="#/tab/reading-plan-day/{{vm.day.dayNumber + 1}}">
               Next Day
             </a>
-            <span class="tab-item no-pointer" ng-if="day.dayNumber == 365"></span>
+            <span class="tab-item no-pointer" ng-if="vm.day.dayNumber == 365"></span>
           </div>
         </div>
       </div>
