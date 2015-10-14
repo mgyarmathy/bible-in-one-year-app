@@ -7,14 +7,43 @@
 
   var app = angular.module('bibleInOneYear.services', []);
 
+  app.factory('$localStorage', localStorageService);
   app.factory('settingsService', settingsService);
   app.factory('readingPlanService', readingPlanService);
 
-  function settingsService() {
+  localStorageService.$inject = ['$window'];
+
+  function localStorageService($window) {
+    var service = {
+      set: set,
+      get: get,
+      remove: remove
+    };
+
+    return service;
+
+    ////////////
+
+    function set(key, value) {
+      return $window.localStorage.setItem(key, value);
+    }
+
+    function get(key) {
+      return $window.localStorage.getItem(key);
+    }
+
+    function remove(key) {
+      return $window.localStorage.removeItem(key);
+    }
+  }
+
+  settingsService.$inject = ['$window', '$localStorage'];
+
+  function settingsService($window, $localStorage) {
     var loggedIn = false;
     var theme = "calm";
 
-    activate();
+    init();
 
     var service = {
       isLoggedIn: isLoggedIn,
@@ -28,12 +57,12 @@
 
     ////////////
 
-    function activate() {
-      if (window.localStorage.getItem('LoggedIn') != null) {
-        loggedIn = window.localStorage.getItem('LoggedIn');
+    function init() {
+      if ($localStorage.get('LoggedIn') != null) {
+        loggedIn = $localStorage.get('LoggedIn');
       }
-      if (window.localStorage.getItem('Theme') != null) {
-        theme = window.localStorage.getItem('Theme');
+      if ($localStorage.get('Theme') != null) {
+        theme = $localStorage.get('Theme');
       }
     }
 
@@ -47,12 +76,12 @@
 
     function logIn() {
       loggedIn = true;
-      window.localStorage.setItem('LoggedIn', loggedIn);
+      $localStorage.set('LoggedIn', loggedIn);
     }
 
     function logOut() {
       loggedIn = false;
-      window.localStorage.removeItem('LoggedIn');
+      $localStorage.remove('LoggedIn');
     }
 
     function setTheme(readingPlan) {
@@ -72,14 +101,16 @@
         default:
           break;
       }
-      window.localStorage.setItem('Theme', theme);
+      $localStorage.set('Theme', theme);
     }
   }
 
-  function readingPlanService() {
+  readingPlanService.$inject = ['$localStorage'];
+
+  function readingPlanService($localStorage) {
     var readingPlan = [];
 
-    activate();
+    init();
 
     var service = {
       createPlan: createPlan,
@@ -95,9 +126,9 @@
 
     ////////////
 
-    function activate() {
-      if (window.localStorage.getItem('ReadingPlan') != null) {
-        readingPlan = JSON.parse(window.localStorage.getItem('ReadingPlan'));
+    function init() {
+      if ($localStorage.get('ReadingPlan') != null) {
+        readingPlan = JSON.parse($localStorage.get('ReadingPlan'));
       }
     }
 
@@ -108,12 +139,12 @@
         var day = moment().add(i, 'days').format('MMMM D, YYYY');
         readingPlan.push({dayNumber: i+1, date: day, scripture: rp.getDay(i), complete: false});
       }
-      window.localStorage.setItem('ReadingPlan', JSON.stringify(readingPlan));
+      $localStorage.set('ReadingPlan', JSON.stringify(readingPlan));
     }
 
     function deletePlan() {
       readingPlan = [];
-      window.localStorage.removeItem('ReadingPlan');
+      $localStorage.remove('ReadingPlan');
     }
 
     function findByDate(date) {
@@ -145,11 +176,11 @@
         readingPlan[i].date = moment().add(j, 'days').format('MMMM D, YYYY');
         j++;
       }
-      window.localStorage.setItem('ReadingPlan', JSON.stringify(readingPlan));
+      $localStorage.set('ReadingPlan', JSON.stringify(readingPlan));
     }
 
     function save() {
-      window.localStorage.setItem('ReadingPlan', JSON.stringify(readingPlan));
+      $localStorage.set('ReadingPlan', JSON.stringify(readingPlan));
     }
   }
   

@@ -4798,10 +4798,10 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
 (function () {
   'use strict';
 
-  var Controllers = require('./controllers/controllers.js');
-  var Services = require('./services/services.js');
-  var Config = require('./config/config.js');
-  var Utils = require('./utils/utils.js');
+  var Controllers = require('./controllers');
+  var Services = require('./services');
+  var Config = require('./config');
+  var Utils = require('./utils');
 
   angular
     .module('bibleInOneYear', [
@@ -4813,26 +4813,45 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
     ]);
 })();
 
-},{"./config/config.js":9,"./controllers/controllers.js":10,"./services/services.js":11,"./utils/utils.js":12}],9:[function(require,module,exports){
+},{"./config":9,"./controllers":13,"./services":18,"./utils":19}],9:[function(require,module,exports){
 (function () {
   'use strict';
 
-  var Services = require('../services/services.js');
+  var routesConfig = require('./routes.config');
+  var ionicConfig = require('./ionic.config');
+  var runConfig = require('./run.config');
 
-  var app = angular.module('bibleInOneYear.config', ['ionic', Services]);
+  var app = angular.module('bibleInOneYear.config', [])
+    .config(routesConfig)
+    .config(ionicConfig)
+    .run(runConfig);
 
-  app.config(routerConfig);
-  app.config(ionicConfig);
-  app.run(runConfig);
+  module.exports = app.name;
+})();
+},{"./ionic.config":10,"./routes.config":11,"./run.config":12}],10:[function(require,module,exports){
+(function () {
+  'use strict';
 
-  routerConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
+  ionicConfig.$inject = ['$ionicConfigProvider'];
 
-  function routerConfig($stateProvider, $urlRouterProvider) {
+  function ionicConfig($ionicConfigProvider) {
+    $ionicConfigProvider.tabs.position('bottom'); // other values: top
+  }
+
+  module.exports = ionicConfig;
+})();
+},{}],11:[function(require,module,exports){
+(function () {
+  'use strict';
+
+  routesConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
+
+  function routesConfig($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('intro', {
         url: "/",
         templateUrl: "templates/intro.html",
-        controller: "IntroCtrl as vm",
+        controller: "IntroController as vm",
         onEnter: function($state, settingsService) {
           if (settingsService.isLoggedIn()) {
             $state.go('tabs.today');
@@ -4843,7 +4862,7 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
         url: "/tab",
         abstract: true,
         templateUrl: "templates/tabs.html",
-        controller: "MainCtrl as vm",
+        controller: "MainController as mainVm",
         onEnter: function($state, settingsService) {
           if (!settingsService.isLoggedIn()) {
             $state.go('intro');
@@ -4855,7 +4874,7 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
         views: {
           'today-tab': {
             templateUrl: "templates/reading-plan-day.html",
-            controller: "TodayCtrl as vm"
+            controller: "TodayController as vm"
           }
         }
       })
@@ -4872,7 +4891,7 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
         views: {
           'reading-plan-tab': {
             templateUrl: "templates/reading-plan-day.html",
-            controller: "ReadingPlanDayCtrl as vm"
+            controller: "ReadingPlanDayController as vm"
           }
         }
       })
@@ -4897,11 +4916,11 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
      $urlRouterProvider.otherwise("/");
   };
 
-  ionicConfig.$inject = ['$ionicConfigProvider'];
-
-  function ionicConfig($ionicConfigProvider) {
-    $ionicConfigProvider.tabs.position('bottom'); // other values: top
-  }
+  module.exports = routesConfig;
+})();
+},{}],12:[function(require,module,exports){
+(function () {
+  'use strict';
 
   runConfig.$inject = ['$ionicPlatform', '$ionicHistory', '$rootScope', '$location', '$state', 'settingsService'];
 
@@ -4946,25 +4965,35 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
     });
   }
 
-  module.exports = app.name;
+  module.exports = runConfig;
 })();
-},{"../services/services.js":11}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function () {
   'use strict';
 
+  var Services = require('../services');
+  var IntroController = require('./intro.controller');
+  var MainController = require('./main.controller');
+  var TodayController = require('./today.controller');
+  var ReadingPlanDayController = require('./reading-plan-day.controller');
+
+  var app = angular.module('bibleInOneYear.controllers', [])
+    .controller('IntroController', IntroController)
+    .controller('MainController', MainController)
+    .controller('TodayController', TodayController)
+    .controller('ReadingPlanDayController', ReadingPlanDayController);
+
+  module.exports = app.name;
+})();
+},{"../services":18,"./intro.controller":14,"./main.controller":15,"./reading-plan-day.controller":16,"./today.controller":17}],14:[function(require,module,exports){
+(function() {
+  'use strict';
+
   var moment = require('moment');
-  var Services = require('../services/services.js');
 
-  var app = angular.module('bibleInOneYear.controllers', ['ionic', Services]);
+  IntroController.$inject = ['$state', '$ionicSlideBoxDelegate', 'readingPlanService', 'settingsService'];
 
-  app.controller('IntroCtrl', IntroCtrl);
-  app.controller('MainCtrl', MainCtrl);
-  app.controller('TodayCtrl', TodayCtrl);
-  app.controller('ReadingPlanDayCtrl', ReadingPlanDayCtrl);
-
-  IntroCtrl.$inject = ['$state', '$ionicSlideBoxDelegate', 'readingPlanService', 'settingsService'];
-
-  function IntroCtrl($state, $ionicSlideBoxDelegate, readingPlanService, settingsService) {
+  function IntroController($state, $ionicSlideBoxDelegate, readingPlanService, settingsService) {
     var vm = this;
 
     vm.currentDay = moment().format('MMMM, D, YYYY');
@@ -5010,22 +5039,28 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
     }
   }
 
-  MainCtrl.$inject = ['$scope', '$state', '$ionicPopup', '$ionicHistory', 'readingPlanService', 'settingsService'];
+  module.exports = IntroController;
+})();
+},{"moment":6}],15:[function(require,module,exports){
+(function() {
+  'use strict';
 
-  function MainCtrl($scope, $state, $ionicPopup, $ionicHistory, readingPlanService, settingsService) {
-    var vm = this;
+  MainController.$inject = ['$scope', '$state', '$ionicPopup', '$ionicHistory', 'readingPlanService', 'settingsService'];
 
-    vm.clearProgress = clearProgress;
-    vm.readingPlan = readingPlanService.list();
-    vm.recalibrateDates = recalibrateDates;
-    vm.theme = settingsService.getTheme();
+  function MainController($scope, $state, $ionicPopup, $ionicHistory, readingPlanService, settingsService) {
+    var mainVm = this;
+
+    mainVm.clearProgress = clearProgress;
+    mainVm.readingPlan = readingPlanService.list();
+    mainVm.recalibrateDates = recalibrateDates;
+    mainVm.theme = settingsService.getTheme();
 
     $scope.$watch(readingPlanService.list, function() {
-      vm.readingPlan = readingPlanService.list();
+      mainVm.readingPlan = readingPlanService.list();
     });
 
     $scope.$watch(settingsService.getTheme, function() {
-      vm.theme = settingsService.getTheme();
+      mainVm.theme = settingsService.getTheme();
     });
 
     function clearProgress() {
@@ -5065,9 +5100,46 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
     }
   }
 
-  TodayCtrl.$inject = ['$scope', '$state', '$timeout', 'readingPlanService'];
+  module.exports = MainController;
+})();
+},{}],16:[function(require,module,exports){
+(function() {
+  'use strict';
 
-  function TodayCtrl($scope, $state, $timeout, readingPlanService) {
+  ReadingPlanDayController.$inject = ['$scope', '$state', '$stateParams', 'readingPlanService'];
+
+  function ReadingPlanDayController($scope, $state, $stateParams, readingPlanService) {
+    var vm = this;
+
+    vm.day = readingPlanService.getDay($stateParams.day);
+    vm.toggleComplete = toggleComplete;
+
+    $scope.$watch(readingPlanService.list, function() {
+      vm.day = readingPlanService.getDay($stateParams.day);
+    });
+
+    function toggleComplete($event) {
+      vm.day.complete = !vm.day.complete;
+      var elem = $event.currentTarget;
+      elem.classList.add('animated','pulse');
+      setTimeout(function() {
+        elem.classList.remove('animated', 'pulse');
+      }, 500);
+      readingPlanService.save();
+    }
+  }
+
+  module.exports = ReadingPlanDayController;
+})();
+},{}],17:[function(require,module,exports){
+(function() {
+  'use strict';
+
+  var moment = require('moment');
+
+  TodayController.$inject = ['$scope', '$state', '$timeout', 'readingPlanService'];
+
+  function TodayController($scope, $state, $timeout, readingPlanService) {
     var vm = this;
 
     vm.day = readingPlanService.findByDate(moment().format('MMMM D, YYYY'));
@@ -5097,32 +5169,9 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
     }
   }
 
-  ReadingPlanDayCtrl.$inject = ['$scope', '$state', '$stateParams', 'readingPlanService'];
-
-  function ReadingPlanDayCtrl($scope, $state, $stateParams, readingPlanService) {
-    var vm = this;
-
-    vm.day = readingPlanService.getDay($stateParams.day);
-    vm.toggleComplete = toggleComplete;
-
-    $scope.$watch(readingPlanService.list, function() {
-      vm.day = readingPlanService.getDay($stateParams.day);
-    });
-
-    function toggleComplete($event) {
-      vm.day.complete = !vm.day.complete;
-      var elem = $event.currentTarget;
-      elem.classList.add('animated','pulse');
-      setTimeout(function() {
-        elem.classList.remove('animated', 'pulse');
-      }, 500);
-      readingPlanService.save();
-    }
-  }
-
-  module.exports = app.name;
+  module.exports = TodayController;
 })();
-},{"../services/services.js":11,"moment":6}],11:[function(require,module,exports){
+},{"moment":6}],18:[function(require,module,exports){
 (function () {
   'use strict';
 
@@ -5132,14 +5181,43 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
 
   var app = angular.module('bibleInOneYear.services', []);
 
+  app.factory('$localStorage', localStorageService);
   app.factory('settingsService', settingsService);
   app.factory('readingPlanService', readingPlanService);
 
-  function settingsService() {
+  localStorageService.$inject = ['$window'];
+
+  function localStorageService($window) {
+    var service = {
+      set: set,
+      get: get,
+      remove: remove
+    };
+
+    return service;
+
+    ////////////
+
+    function set(key, value) {
+      return $window.localStorage.setItem(key, value);
+    }
+
+    function get(key) {
+      return $window.localStorage.getItem(key);
+    }
+
+    function remove(key) {
+      return $window.localStorage.removeItem(key);
+    }
+  }
+
+  settingsService.$inject = ['$window', '$localStorage'];
+
+  function settingsService($window, $localStorage) {
     var loggedIn = false;
     var theme = "calm";
 
-    activate();
+    init();
 
     var service = {
       isLoggedIn: isLoggedIn,
@@ -5153,12 +5231,12 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
 
     ////////////
 
-    function activate() {
-      if (window.localStorage.getItem('LoggedIn') != null) {
-        loggedIn = window.localStorage.getItem('LoggedIn');
+    function init() {
+      if ($localStorage.get('LoggedIn') != null) {
+        loggedIn = $localStorage.get('LoggedIn');
       }
-      if (window.localStorage.getItem('Theme') != null) {
-        theme = window.localStorage.getItem('Theme');
+      if ($localStorage.get('Theme') != null) {
+        theme = $localStorage.get('Theme');
       }
     }
 
@@ -5172,12 +5250,12 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
 
     function logIn() {
       loggedIn = true;
-      window.localStorage.setItem('LoggedIn', loggedIn);
+      $localStorage.set('LoggedIn', loggedIn);
     }
 
     function logOut() {
       loggedIn = false;
-      window.localStorage.removeItem('LoggedIn');
+      $localStorage.remove('LoggedIn');
     }
 
     function setTheme(readingPlan) {
@@ -5197,14 +5275,16 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
         default:
           break;
       }
-      window.localStorage.setItem('Theme', theme);
+      $localStorage.set('Theme', theme);
     }
   }
 
-  function readingPlanService() {
+  readingPlanService.$inject = ['$localStorage'];
+
+  function readingPlanService($localStorage) {
     var readingPlan = [];
 
-    activate();
+    init();
 
     var service = {
       createPlan: createPlan,
@@ -5220,9 +5300,9 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
 
     ////////////
 
-    function activate() {
-      if (window.localStorage.getItem('ReadingPlan') != null) {
-        readingPlan = JSON.parse(window.localStorage.getItem('ReadingPlan'));
+    function init() {
+      if ($localStorage.get('ReadingPlan') != null) {
+        readingPlan = JSON.parse($localStorage.get('ReadingPlan'));
       }
     }
 
@@ -5233,12 +5313,12 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
         var day = moment().add(i, 'days').format('MMMM D, YYYY');
         readingPlan.push({dayNumber: i+1, date: day, scripture: rp.getDay(i), complete: false});
       }
-      window.localStorage.setItem('ReadingPlan', JSON.stringify(readingPlan));
+      $localStorage.set('ReadingPlan', JSON.stringify(readingPlan));
     }
 
     function deletePlan() {
       readingPlan = [];
-      window.localStorage.removeItem('ReadingPlan');
+      $localStorage.remove('ReadingPlan');
     }
 
     function findByDate(date) {
@@ -5270,17 +5350,17 @@ module.exports=["Genesis 1-3, Matthew 1","Genesis 4-6, Matthew 2","Genesis 7-9, 
         readingPlan[i].date = moment().add(j, 'days').format('MMMM D, YYYY');
         j++;
       }
-      window.localStorage.setItem('ReadingPlan', JSON.stringify(readingPlan));
+      $localStorage.set('ReadingPlan', JSON.stringify(readingPlan));
     }
 
     function save() {
-      window.localStorage.setItem('ReadingPlan', JSON.stringify(readingPlan));
+      $localStorage.set('ReadingPlan', JSON.stringify(readingPlan));
     }
   }
   
   module.exports = app.name;
 })();
-},{"bible-in-one-year":1,"moment":6,"underscore":7}],12:[function(require,module,exports){
+},{"bible-in-one-year":1,"moment":6,"underscore":7}],19:[function(require,module,exports){
 (function () {
   'use strict';
 

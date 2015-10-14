@@ -54,7 +54,7 @@ gulp.task('browserify', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('www/js/app.js', ['browserify']);
+  gulp.watch(['www/js/**/*.js', '!www/js/bundle.js'], ['browserify']);
   gulp.watch(paths.sass, ['sass', 'reload']);
   gulp.watch(['www/index.html', 'www/templates/*.html'], ['reload']);
 });
