@@ -1,17 +1,17 @@
-<ion-header-bar align-title="center" ng-class="'bar-' + vm.theme">
+<ion-header-bar align-title="center" ng-class="'bar-' + mainVm.theme">
   <div class="buttons">
     <button class="button button-white button-clear" ng-show="showBackButton()" ng-click="goBack()">Back</button>
   </div>
   <h1 class="title">Bible In One Year</h1>
 </ion-header-bar>
-<ion-tabs class="tabs-stable tabs-color-calm tabs-striped tabs-icon-top" ng-class="'tabs-color-' + vm.theme">
-  <ion-tab title="Today" icon="ion-calendar" ui-sref="tabs.today">
+<ion-tabs class="tabs-stable tabs-color-calm tabs-striped tabs-icon-top" ng-class="'tabs-color-' + mainVm.theme">
+  <ion-tab title="Today" icon="ion-calendar" ui-sref="tabs.today" animation="slide-left-right">
     <ion-nav-view name="today-tab"></ion-nav-view>
   </ion-tab>
-  <ion-tab title="Reading Plan" icon="ion-map" ui-sref="tabs.reading-plan">
+  <ion-tab title="Reading Plan" icon="ion-map" ui-sref="tabs.reading-plan" animation="slide-left-right">
     <ion-nav-view name="reading-plan-tab"></ion-nav-view>
   </ion-tab>
-  <ion-tab title="Settings" icon="ion-gear-a" ui-sref="tabs.settings">
+  <ion-tab title="Settings" icon="ion-gear-a" ui-sref="tabs.settings" animation="slide-left-right">
     <ion-nav-view name="settings-tab"></ion-nav-view>
   </ion-tab>
 </ion-tabs>

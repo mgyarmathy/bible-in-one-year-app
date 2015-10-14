@@ -2,7 +2,7 @@
   <ion-content>
     <div class="reading-plan-container row responsive-md">
       <div class="col-80 col-offset-10">
-        <div ng-repeat="day in vm.readingPlan" class="reading-plan-day {{vm.theme}}" ng-class="{'complete': vm.day.complete}">
+        <div ng-repeat="day in mainVm.readingPlan" class="reading-plan-day {{mainVm.theme}}" ng-class="{'complete': day.complete}">
           <a nav-direction="enter" href="#/tab/reading-plan-day/{{day.dayNumber}}">
             <div class="day-label">DAY</div>{{day.dayNumber}}
           </a>

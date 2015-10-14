@@ -6,14 +6,14 @@
         <div class="list card">
           <div class="item item-icon-left">
             <i ng-class="{
-                  'icon-calm': vm.day.complete && vm.$parent.theme == 'calm',
-                  'icon-balanced': vm.day.complete && vm.$parent.theme == 'balanced',
-                  'icon-royal': vm.day.complete && vm.$parent.theme == 'royal',
-                  'icon-energized': vm.day.complete && vm.$parent.theme == 'energized'
+                  'icon-calm': vm.day.complete && mainVm.theme == 'calm',
+                  'icon-balanced': vm.day.complete && mainVm.theme == 'balanced',
+                  'icon-royal': vm.day.complete && mainVm.theme == 'royal',
+                  'icon-energized': vm.day.complete && mainVm.theme == 'energized'
                 }" 
               ng-click="vm.toggleComplete($event)" class="icon ion-calendar pointer"></i>
             <div style="color: #333; font-weight: 400; font-size: 12px; line-height: 14px;">DAY {{vm.day.dayNumber}}</div>
-            <strong style="color: #4c4c4c;">{{vm.day.date}}</strong>
+            <strong style="color: #4c4c4c;">{{vm.day.date}} {{theme}}</strong>
           </div>
           <div class="item item-body">
             <h1 ng-bind-html="vm.day.scripture | stringReplace : ',' : '<br/>' " style="margin-bottom:16px; color: #4c4c4c;"></h1>
