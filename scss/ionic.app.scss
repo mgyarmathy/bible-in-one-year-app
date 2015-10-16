@@ -1,0 +1,142 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #387ef5 !default;
+$calm:                            #11c1f3 !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #ffc900 !default;
+$assertive:                       #ef473a !default;
+$royal:                           #886aea !default;
+$dark:                            #444 !default;
+*/
+
+$oldnewtestament: #FC685B; // coral
+$mcheyne: #4178A2; // blue
+$chronological: #46C15B; // green
+$newtestament: #FCB75B; // orange
+
+
+$calm: $oldnewtestament !default; // coral
+$balanced: $mcheyne !default; // blue
+$royal: $chronological !default; // green
+$energized: $newtestament !default; // orange
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+@import "animate";
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+
+.slider {
+    height: 100%;
+}
+
+.slider-slides {
+    text-align: center;
+}
+
+.slider-slide {
+    padding-top: 80px;
+}
+
+.reading-plan-container {
+    padding: 30px 15px;
+    text-align: center;
+}
+
+.icon-calm {
+    color: $calm;
+}
+
+.icon-balanced {
+    color: $balanced;
+}
+
+.icon-royal {
+    color: $royal;
+}
+
+.icon-energized {
+    color: $energized;
+}
+
+.reading-plan-day {
+    display: inline-block;
+    margin: 10px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #ccc;
+
+    &.complete {
+        &.calm {
+            border: 1px solid $calm;
+            background-color: $calm;
+        }
+        &.balanced {
+            border: 1px solid $balanced;
+            background-color: $balanced;
+        }
+        &.royal {
+            border: 1px solid $royal;
+            background-color: $royal;
+        }
+        &.energized {
+            border: 1px solid $energized;
+            background-color: $energized;
+        }
+        a, .day-label {
+            color: #FFF;
+        }
+    }
+
+    a {
+        display: inline-block; 
+        width: 50px;
+        padding: 10px;
+        color: #4c4c4c;
+        text-decoration: none;
+    }
+
+    .day-label {
+        color: #333;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 10px;
+    }
+}
+
+.pointer {
+    cursor: pointer
+}
+
+.no-pointer {
+    cursor: default !important;
+}
+
+.about-page {
+    color: #4c4c4c;
+
+    a {
+        font-weight: 600;
+        text-decoration: none;
+    }
+}
+
+.bar .title {
+    overflow: initial;
+}
+
+@media (max-width: 767px) {
+    h2 {
+        font-size: 26px;
+    }
+}
+
+
