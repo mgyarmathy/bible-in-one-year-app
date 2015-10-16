@@ -18,7 +18,7 @@ var paths = {
 gulp.task('browser-sync', ['sass'], function() {
   browserSync({
     server: {
-      baseDir: './www/'
+      baseDir: '.'
     }
   });
 });
@@ -32,31 +32,31 @@ gulp.task('sass', function(done) {
     .pipe(sass({
       errLogToConsole: true
     }))
-    .pipe(gulp.dest('./www/css/'))
+    .pipe(gulp.dest('./css/'))
     .pipe(minifyCss({
       keepSpecialComments: 0
     }))
     .pipe(rename({ extname: '.min.css' }))
-    .pipe(gulp.dest('./www/css/'))
+    .pipe(gulp.dest('./css/'))
     //.pipe(browserSync.reload({stream:true}))
     .on('end', done);
 });
 
 gulp.task('browserify', function() {
-  var bundleStream = browserify('./www/js/app.js').bundle()
+  var bundleStream = browserify('./js/app.js').bundle()
  
   bundleStream
-    .pipe(source('www/js/app.js'))
+    .pipe(source('js/app.js'))
     //.pipe(streamify(uglify()))
     .pipe(rename('bundle.js'))
-    .pipe(gulp.dest('./www/js'))
+    .pipe(gulp.dest('./js'))
     .pipe(browserSync.reload({stream:true}));
 });
 
 gulp.task('watch', function() {
-  gulp.watch(['www/js/**/*.js', '!www/js/bundle.js'], ['browserify']);
+  gulp.watch(['js/**/*.js', '!js/bundle.js'], ['browserify']);
   gulp.watch(paths.sass, ['sass', 'reload']);
-  gulp.watch(['www/index.html', 'www/templates/*.html'], ['reload']);
+  gulp.watch(['index.html', 'templates/*.html'], ['reload']);
 });
 
 gulp.task('install', ['git-check'], function() {
