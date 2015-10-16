@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "bible-in-one-year-app: An Ionic project",
   "dependencies": {
-    "angular": "^1.4.7",
     "bible-in-one-year": "^1.0.0",
     "moment": "^2.10.6",
     "underscore": "^1.8.3"
@@ -22,7 +21,8 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "cordovaPlugins": [
-    "com.ionic.keyboard"
+    "com.ionic.keyboard",
+    "org.apache.cordova.inappbrowser.InAppBrowser"
   ],
   "cordovaPlatforms": [
     "ios",
